@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# Set up
+
+## Env variables
+
+1. Create `.env.development` and `.env.production`
+2. Next will pick this up automatically (ref: https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#default-environment-variables)
+
+## Service Account
+
+- Files in service-accounts/ were created in firebase console > project settings > service accounts. I forgot why I needed this.
+
+## Set up firebase
+
+- Create new projects. ex. `xxx-dev`, `xxx-prod` in firebase
+- Set up `auth`, enable preferred sign-in methods. ex. email/password, Google, Github, etc. Read more detail in `auth.md`
+- Set up `firestore`
