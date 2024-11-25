@@ -41,6 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 1. Create `.env.development` and `.env.production`
 2. Next will pick this up automatically (ref: https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#default-environment-variables)
+   3.SENTRY_AUTH_TOKEN is used if I have CI/CD pipeline. (Instruction from Sentry: Add the Sentry authentication token as an environment variable to your CI setup)
 
 ## Service Account
 
@@ -51,3 +52,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Create new projects. ex. `xxx-dev`, `xxx-prod` in firebase
 - Set up `auth`, enable preferred sign-in methods. ex. email/password, Google, Github, etc. Read more detail in `auth.md`
 - Set up `firestore`
+
+## Set up sentry
+
+- Create a new project, pick Next.js, and follow the wizard setup.

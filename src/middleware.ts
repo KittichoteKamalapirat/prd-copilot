@@ -6,7 +6,7 @@ import {
 } from "next-firebase-auth-edge";
 import { clientConfig, serverConfig } from "./firebase/auth/config";
 
-const PUBLIC_PATHS = ["/register", "/login"];
+const PUBLIC_PATHS = ["/register", "/login", "/sentry-example-page"];
 
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
