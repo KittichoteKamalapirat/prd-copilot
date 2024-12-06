@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../firebase/config";
+import { PaymentButton } from "../components/ui/payment-button";
 
 interface HomePageProps {
   email?: string;
@@ -31,6 +32,7 @@ export default function HomePage({ email }: HomePageProps) {
       >
         Logout
       </button>
+      <PaymentButton amount={99.99} />
     </main>
   );
 }

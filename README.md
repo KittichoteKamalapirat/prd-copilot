@@ -39,20 +39,32 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Env variables
 
+### Dev
+
 1. Create `.env.development` and `.env.production`
 2. Next will pick this up automatically (ref: https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#default-environment-variables)
-   3.SENTRY_AUTH_TOKEN is used if I have CI/CD pipeline. (Instruction from Sentry: Add the Sentry authentication token as an environment variable to your CI setup)
+
+### Prod
+
+1. Set all env variables on Vercel
 
 ## Service Account
 
-- Files in service-accounts/ were created in firebase console > project settings > service accounts. I forgot why I needed this.
+- Files in service-accounts/ were created in firebase console > project settings > service accounts. We need this for auth to work (see more in auth.md)
 
 ## Set up firebase
 
 - Create new projects. ex. `xxx-dev`, `xxx-prod` in firebase
 - Set up `auth`, enable preferred sign-in methods. ex. email/password, Google, Github, etc. Read more detail in `auth.md`
 - Set up `firestore`
+- After deploy to vercel, add domains to Authorized domains in Firebase > Authentication > Settings > Authorized domains. ex. fukunomi.vercel.app
 
-## Set up sentry
+## Set up Stripe
 
-- Create a new project, pick Next.js, and follow the wizard setup.
+- Get env variables from stripe home
+
+```
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=
+```

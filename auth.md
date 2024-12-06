@@ -102,6 +102,10 @@ This aligns with the middleware’s expectations and avoids the Invalid argument
 
 ref: https://hackernoon.com/using-firebase-authentication-with-the-latest-nextjs-features
 
+```
+Last but not least, we need to generate service account credentials. Those will allow your app to gain full access to your Firebase services. Go to Project Settings > Service accounts and click Generate new private key. This will download a .json file with service account credentials. Save this file in a known location.
+```
+
 Enable Github
 
 - Creat a new OAuth app on github at https://github.com/settings/applications/new
