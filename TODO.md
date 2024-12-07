@@ -8,8 +8,8 @@
 - [x] Configure Tailwind CSS for styling.
 - [x] Set up ShadCN for component library.
 - [x] Integrate Firebase for authentication and database.
-- [ ] Configure Stripe for payments and subscription management.
-- [ ] Set up OpenAI API for AI-generated PRDs.
+- [x] Configure Stripe for payments and subscription management.
+- [x] Set up OpenAI API for AI-generated PRDs.
 - [x] Integrate Sentry for error tracking.
 
 ---

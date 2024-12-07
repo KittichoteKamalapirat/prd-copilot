@@ -15,8 +15,14 @@ interface DisplayStore {
   showUpsellSheet: boolean;
 }
 
+interface PrdStore {
+  text: string;
+  setText: (fn: (prev: string) => string) => void;
+}
+
 export type IStore = {
   display: PropsWithSet<DisplayStore>;
+  prd: PropsWithSet<PrdStore>;
 };
 
 export const useStore = create<IStore>((set, get) => {
@@ -67,6 +73,21 @@ export const useStore = create<IStore>((set, get) => {
     display: {
       set: factorySetFunc<IStore["display"]>("display"),
       showUpsellSheet: false,
+    },
+    prd: {
+      set: factorySetFunc<IStore["prd"]>("prd"),
+      // for streaming, can access previous data
+      setText: (fn: (prev: string) => string) => {
+        set((state) => ({
+          prd: {
+            ...state.prd,
+            text: fn(state.prd.text),
+          },
+        }));
+      },
+      text: `Hi I am Write My PRD bot, Your PRD writing Assistant 🙌 Tell me what
+            does your Product do? And I will try to help you kickstart your PRD
+            writing journey. 🚀`,
     },
   };
 
