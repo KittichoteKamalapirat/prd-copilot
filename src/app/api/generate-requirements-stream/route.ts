@@ -1,15 +1,39 @@
 // src/app/api/generate-requirements/route.ts
+import { PrdTypeValues } from "@/lib/types/PrdType";
 import { NextRequest, NextResponse } from "next/server";
 import { openai } from "../../../lib/openai";
 
+interface Props {
+  // input
+  prdType: PrdTypeValues;
+  productName: string;
+  featureName: string;
+  overview: string;
+  featureList: string;
+  userFeedback: string;
+
+  // sections
+  hasObjective: boolean;
+  hasSuccessMetrics: boolean;
+  hasPOC: boolean; // PM, design, tech, marketing, etc
+  hasSecurity: boolean;
+  hasFunctionalReq: boolean;
+  hasNonFunctionalReq: boolean;
+  hasStakeholders: boolean;
+  hasBackground: boolean;
+  hasConstraints: boolean;
+  hasAssumptions: boolean;
+  hasTimeline: boolean;
+  hasDependency: boolean;
+}
 export async function POST(req: NextRequest) {
   const { productName, featureName, overview, featureList, userFeedback } =
-    await req.json();
+    (await req.json()) as Props;
 
   if (!productName || !featureName || !overview) {
     return NextResponse.json(
       { message: "Missing required fields" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -37,6 +61,7 @@ export async function POST(req: NextRequest) {
         try {
           for await (const chunk of stream) {
             const text = chunk.choices[0]?.delta?.content || "";
+            console.log(text);
             controller.enqueue(encoder.encode(text));
           }
           controller.close();
@@ -57,7 +82,7 @@ export async function POST(req: NextRequest) {
     console.error("Error generating requirements:", error);
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

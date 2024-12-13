@@ -1,65 +1,101 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/UpKvctprgSY
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import Link from "next/link";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+'use client'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
-  BriefcaseIcon,
-  DollarSignIcon,
-  HomeIcon,
-  MailIcon,
-  MenuIcon,
-  MountainIcon,
-  UserIcon,
-} from "lucide-react";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { getAuth, signOut } from 'firebase/auth'
+import { Loader, LogOut, MenuIcon } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { brandName } from '../constants/brand'
+import { app } from '../firebase/config'
+import { urlResolver } from '../lib/urlResolver'
 
-export default function Component() {
+interface Props {
+  isAuth: boolean
+  isPro: boolean
+}
+
+export default function Navbar({ isAuth, isPro }: Props) {
+  const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  async function handleLogout(e: React.MouseEvent | Event) {
+    e.stopPropagation()
+    setIsLoggingOut(true)
+    try {
+      console.log('logging out')
+      await signOut(getAuth(app))
+
+      await fetch('/api/logout')
+
+      router.push('/login')
+    } catch (error) {
+      console.error('Cannot log out', error)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
+
   return (
     <header className="flex flex-col justify-between w-full bg-white dark:bg-gray-950 shadow-sm">
       <div className="flex items-center justify-between h-16 px-4 md:px-6">
-        <Link href="#" className="flex items-center" prefetch={false}>
-          <MountainIcon className="h-6 w-6" />
-          <span className="sr-only">Acme Inc</span>
+        <Link href={urlResolver.appHome} className="flex items-center" prefetch={false}>
+          <Image src="/logo.svg" alt="Logo" width={36} height={36} />
+          <span className="ml-2 font-semibold text-lg">{brandName}</span>
         </Link>
-        <nav className="hidden md:flex gap-6">
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline"
-            prefetch={false}
-          >
-            Home
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline"
-            prefetch={false}
-          >
-            About
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline"
-            prefetch={false}
-          >
-            Features
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline"
-            prefetch={false}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline"
-            prefetch={false}
-          >
-            Contact
-          </Link>
+        <nav className="hidden md:flex md:items-center gap-6">
+          {!isPro && (
+            <Link
+              href={urlResolver.pricing}
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              Pricing
+            </Link>
+          )}
+          {isAuth ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
+                  <AvatarFallback>YYY</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {isPro && (
+                  <DropdownMenuItem>
+                    <Link href={urlResolver.subscription} className="w-full">
+                      My Subscription
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+
+                <DropdownMenuItem onSelect={handleLogout}>
+                  {isLoggingOut ? <Loader /> : <LogOut />}
+                  Log out 2
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link
+                href={urlResolver.login}
+                className="text-sm font-medium hover:underline"
+                prefetch={false}
+              >
+                Get started
+              </Link>
+            </>
+          )}
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -68,91 +104,65 @@ export default function Component() {
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
+          {/* Mobile Sheet */}
           <SheetContent side="left">
             <div className="flex flex-col items-start gap-6 p-6">
-              <Link
-                href="#"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Home
-              </Link>
-              <Link
-                href="#"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                About
-              </Link>
-              <Link
-                href="#"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Features
-              </Link>
-              <Link
-                href="#"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Pricing
-              </Link>
-              <Link
-                href="#"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Contact
-              </Link>
+              {isAuth ? (
+                <>
+                  <Card className="flex gap-2 items-center p-4 w-full">
+                    <Avatar className="cursor-pointer h-8 w-8">
+                      <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
+                      <AvatarFallback>U</AvatarFallback>
+                      <Avatar className="cursor-pointer h-8 w-8">
+                        <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
+                        <AvatarFallback>U</AvatarFallback>
+                      </Avatar>
+                    </Avatar>
+                    "emailxxx"
+                  </Card>
+                  {isPro && (
+                    <Link
+                      href={urlResolver.subscription}
+                      className="text-lg font-medium hover:underline"
+                      prefetch={false}
+                    >
+                      My Subscription
+                    </Link>
+                  )}
+                  <Button
+                    onClick={handleLogout}
+                    variant="ghost"
+                    className="w-full justify-start p-0"
+                  >
+                    {isLoggingOut ? <Loader /> : <LogOut />}
+                    Log out 1
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href={urlResolver.login}
+                    className="text-lg font-medium hover:underline"
+                    prefetch={false}
+                  >
+                    Get started
+                  </Link>
+                </>
+              )}
+
+              {!isPro && (
+                <Link
+                  href={urlResolver.pricing}
+                  className="text-lg font-medium hover:underline"
+                  prefetch={false}
+                >
+                  Pricing
+                </Link>
+              )}
             </div>
           </SheetContent>
         </Sheet>
       </div>
-      <div className="md:hidden">
-        <nav className="flex justify-around bg-white dark:bg-gray-950 py-2 shadow-t">
-          <Link
-            href="#"
-            className="flex flex-col items-center gap-1 text-sm font-medium"
-            prefetch={false}
-          >
-            <HomeIcon className="h-5 w-5" />
-            Home
-          </Link>
-          <Link
-            href="#"
-            className="flex flex-col items-center gap-1 text-sm font-medium"
-            prefetch={false}
-          >
-            <UserIcon className="h-5 w-5" />
-            About
-          </Link>
-          <Link
-            href="#"
-            className="flex flex-col items-center gap-1 text-sm font-medium"
-            prefetch={false}
-          >
-            <BriefcaseIcon className="h-5 w-5" />
-            Features
-          </Link>
-          <Link
-            href="#"
-            className="flex flex-col items-center gap-1 text-sm font-medium"
-            prefetch={false}
-          >
-            <DollarSignIcon className="h-5 w-5" />
-            Pricing
-          </Link>
-          <Link
-            href="#"
-            className="flex flex-col items-center gap-1 text-sm font-medium"
-            prefetch={false}
-          >
-            <MailIcon className="h-5 w-5" />
-            Contact
-          </Link>
-        </nav>
-      </div>
     </header>
-  );
+  )
 }
