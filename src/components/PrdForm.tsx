@@ -72,8 +72,8 @@ const baseSchema = z.object({
   // overview: z.string().min(1, 'Overview is required'),
 
   // userFeedback: z.string(),
-  successMetrics: z.string().min(1, 'Success metrics are required'),
-  additional: z.string(),
+  successMetrics: z.string().optional(),
+  additional: z.string().optional(),
 
   //   checkboxes
   hasObjective: z.boolean(),
@@ -178,6 +178,8 @@ export const PrdForm = ({ isAuth = false }: Props) => {
   const selectedPrdType = watch('type')
 
   console.log('form', watch())
+  console.log('isValid', isValid)
+  console.log('errors', errors)
 
   // const onSubmit = async (data: FormData) => {
   //   try {
@@ -197,8 +199,6 @@ export const PrdForm = ({ isAuth = false }: Props) => {
   // };
 
   const handleFakeSubmit = async () => {
-    console.log('Fake submit')
-
     // Fake stream for not logged in users
     const delay = new Promise((resolve) => setTimeout(resolve, 1000))
     await delay
@@ -209,7 +209,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
     const interval = setInterval(() => {
       if (index < fakeChunks.length) {
         const chunk = fakeChunks[index]
-        setText((prev) => prev + chunk)
+        setText((prev) => prev + chunk) // Add a space after each chunk
 
         index++
       } else {
@@ -313,7 +313,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
 
                 {(errors as FieldErrorsImpl<SolveProblemFormData>).problem && (
                   <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrors<{ problem: string }>).problem?.message}
+                    {(errors as FieldErrorsImpl<SolveProblemFormData>).problem?.message}
                   </p>
                 )}
               </div>
@@ -348,11 +348,11 @@ export const PrdForm = ({ isAuth = false }: Props) => {
           {selectedPrdType === PRD_TYPE.CREATE_MVP && (
             <>
               <div>
-                <Label htmlFor="featureName">What is the product name?</Label>
-                <Input id="featureName" {...register('featureName')} />
-                {(errors as FieldErrorsImpl<AddFeatureFormData>).featureName && (
+                <Label htmlFor="productName">What is the product name?</Label>
+                <Input id="productName" {...register('productName')} />
+                {(errors as FieldErrorsImpl<CreateMVPFormData>).productName && (
                   <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrors<AddFeatureFormData>).featureName?.message}
+                    {(errors as FieldErrors<CreateMVPFormData>).productName?.message}
                   </p>
                 )}
               </div>
@@ -452,18 +452,46 @@ export const PrdForm = ({ isAuth = false }: Props) => {
 
                 {(errors as FieldErrorsImpl<OthersFormData>).problem && (
                   <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrors<{ problem: string }>).problem?.message}
+                    {(errors as FieldErrorsImpl<OthersFormData>).problem?.message}
                   </p>
                 )}
               </div>
             </>
           )}
 
+          <div>
+            <Label htmlFor="successMetrics">What are the success metrics?</Label>
+            <Textarea
+              id="successMetrics"
+              rows={4}
+              {...register('successMetrics')}
+              className={errors.successMetrics ? 'border-red-500' : ''}
+            />
+
+            {errors.successMetrics && (
+              <p className="mt-1 text-sm text-red-500">{errors.successMetrics?.message}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="additional">Any additional note?</Label>
+            <Textarea
+              id="additional"
+              rows={4}
+              {...register('additional')}
+              className={errors.additional ? 'border-red-500' : ''}
+            />
+
+            {errors.additional && (
+              <p className="mt-1 text-sm text-red-500">{errors.additional?.message}</p>
+            )}
+          </div>
+
           {/* Section 3: Additional Requirements */}
 
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger>Advance options?</AccordionTrigger>
+              <AccordionTrigger>Advanced options</AccordionTrigger>
               <AccordionContent>
                 <div>
                   <div className="text-lg font-bold text-gray-800 mb-5">
