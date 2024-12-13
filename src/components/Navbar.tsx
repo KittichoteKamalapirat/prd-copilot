@@ -118,7 +118,6 @@ export default function Navbar({ isAuth, isPro }: Props) {
                         <AvatarFallback>U</AvatarFallback>
                       </Avatar>
                     </Avatar>
-                    "emailxxx"
                   </Card>
                   {isPro && (
                     <Link

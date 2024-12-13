@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function LandingPage({ userId, isAuth, isPro }: Props) {
-  const { user, loading } = useAuthUser()
+  const { user } = useAuthUser()
   const { set, showUpsellSheet, showAuthModal } = useStore((state) => state.display)
 
   return (
