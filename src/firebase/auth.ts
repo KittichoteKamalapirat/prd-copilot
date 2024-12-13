@@ -21,7 +21,7 @@ import { FbUser } from "../lib/types/User";
 const googleProvider = new GoogleAuthProvider();
 
 const createUserInFirestoreIfNotExist = async (
-  user: FirebaseAuthUser,
+  user: FirebaseAuthUser
 ): Promise<boolean> => {
   try {
     const { email, displayName, photoURL, uid, providerData } = user || {};
@@ -40,6 +40,7 @@ const createUserInFirestoreIfNotExist = async (
       provider: providerData[0].providerId,
       timezone,
       joinedDate: serverTimestamp() as Timestamp,
+      isPro: false,
     };
     await setDoc(userRef, newUser);
     return false;
@@ -59,7 +60,7 @@ export const signInWithGoogle = async () => {
     }
 
     const firebaseCredential = GoogleAuthProvider.credential(
-      credential.idToken,
+      credential.idToken
     );
     const firebaseUser = await signInWithCredential(auth, firebaseCredential);
 
@@ -97,7 +98,7 @@ export const signInWithGithub = async () => {
     }
 
     const firebaseCredential = GithubAuthProvider.credential(
-      credential.accessToken,
+      credential.accessToken
     );
 
     const firebaseUser = await signInWithCredential(auth, firebaseCredential);
