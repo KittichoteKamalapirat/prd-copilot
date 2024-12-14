@@ -24,8 +24,9 @@ import { SendHorizontal } from 'lucide-react'
 import { Controller, FieldErrors, FieldErrorsImpl, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { LocalStorage } from '../app/enums/LocalStorage'
-import { fakeChunks } from '../constants/fakeChunks'
+
 import { useStore } from '../lib/store'
+import { generateFakeChunks } from '../constants/generateFakeChunks'
 
 interface Option {
   label: string
@@ -145,9 +146,10 @@ export type PrdFormData = z.infer<typeof prdFormSchema>
 
 interface Props {
   isAuth?: boolean
+  initialData?: PrdFormData
 }
 
-export const PrdForm = ({ isAuth = false }: Props) => {
+export const PrdForm = ({ isAuth = false, initialData }: Props) => {
   const {
     register,
     handleSubmit,
@@ -156,7 +158,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
     formState: { errors, isValid, isDirty },
   } = useForm<PrdFormData>({
     resolver: zodResolver(prdFormSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       hasObjective: true,
       hasSuccessMetrics: true,
       hasPOC: true,
@@ -175,10 +177,6 @@ export const PrdForm = ({ isAuth = false }: Props) => {
   const { set, setText } = useStore((state) => state.prd)
   const selectedPrdType = watch('type')
 
-  console.log('form', watch())
-  console.log('isValid', isValid)
-  console.log('errors', errors)
-
   // const onSubmit = async (data: FormData) => {
   //   try {
   //     const response = await fetch("/api/generate-requirements", {
@@ -196,13 +194,15 @@ export const PrdForm = ({ isAuth = false }: Props) => {
   //   }
   // };
 
-  const handleFakeSubmit = async () => {
+  const handleFakeSubmit = async (data: PrdFormData) => {
     // Fake stream for not logged in users
     const delay = new Promise((resolve) => setTimeout(resolve, 1000))
     await delay
 
     let index = 0
     set({ isBlurred: true })
+
+    const fakeChunks = generateFakeChunks(data)
 
     const interval = setInterval(() => {
       if (index < fakeChunks.length) {
@@ -218,7 +218,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
 
   const onSubmit = async (data: PrdFormData) => {
     if (isAuth) {
-      handleFakeSubmit()
+      handleFakeSubmit(data)
       localStorage.setItem(LocalStorage.UNAUTH_PRD_INPUT, JSON.stringify(data))
     }
 
