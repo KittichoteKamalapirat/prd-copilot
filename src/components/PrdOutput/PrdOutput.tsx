@@ -30,7 +30,12 @@ export const PrdOutput = ({ isAuth, isPro }: Props) => {
     if (!isPro) set({ showUpsellSheet: true })
   }
   return (
-    <div className="form-textarea relative w-full p-4 px-8 overflow-scroll h-[calc(100%-1rem)] shadow-2xl flex items-center justify-center flex-col select-none">
+    <div
+      className={cn(
+        'form-textarea relative w-full p-4 px-8 overflow-scroll h-[calc(100%-1rem)] shadow-2xl flex items-center justify-center flex-col',
+        !isPro && ' select-none'
+      )}
+    >
       <div className="text-left absolute top-4 left-4">
         <div className={cn('is-typed', isBlurred && 'blurred')}>
           <ReactMarkdown>{text || placeHolder}</ReactMarkdown>

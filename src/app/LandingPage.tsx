@@ -4,23 +4,30 @@ import { Button } from '@/components/ui/button'
 import { oneLiner } from '@/constants/brand'
 import Layout from '../components/Layout'
 import { MyDialog } from '../components/my-dialog'
-import { PrdForm } from '../components/PrdForm'
+import { PrdForm, PrdFormData } from '../components/PrdForm'
 import { PrdOutput } from '../components/PrdOutput/PrdOutput'
 import PricingSectionCards from '../components/PricingSectionCards'
 import { UserAuthForm } from '../components/user-auth-form'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useStore } from '../lib/store'
+import { useEffect } from 'react'
 
 interface Props {
   isAuth: boolean
   isPro: boolean
   userId?: string
+  initialData?: PrdFormData
+  output?: string
 }
 
-export default function LandingPage({ userId, isAuth, isPro }: Props) {
+export default function LandingPage({ userId, isAuth, isPro, initialData, output }: Props) {
   const { user } = useAuthUser()
   const { set, showUpsellSheet, showAuthModal } = useStore((state) => state.display)
+  const { set: setPrd } = useStore((state) => state.prd)
 
+  useEffect(() => {
+    if (output) setPrd({ text: output })
+  }, [])
   return (
     // This page is false because
     // Make the page not scrollable
@@ -48,7 +55,7 @@ export default function LandingPage({ userId, isAuth, isPro }: Props) {
             Try with a sample requirement
           </Button>
 
-          <PrdForm isAuth={Boolean(user)} />
+          <PrdForm isAuth={Boolean(user)} initialData={initialData} />
         </div>
         {/* right */}
         <div
