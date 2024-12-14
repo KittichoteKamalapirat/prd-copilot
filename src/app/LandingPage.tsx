@@ -7,7 +7,6 @@ import { MyDialog } from '../components/my-dialog'
 import { PrdForm } from '../components/PrdForm'
 import { PrdOutput } from '../components/PrdOutput/PrdOutput'
 import PricingSectionCards from '../components/PricingSectionCards'
-import { StickyActionBar } from '../components/StickyActionBar'
 import { UserAuthForm } from '../components/user-auth-form'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useStore } from '../lib/store'
@@ -24,12 +23,18 @@ export default function LandingPage({ userId, isAuth, isPro }: Props) {
 
   return (
     // This page is false because
-    <Layout isAuth={isAuth} className="h-screen" isPro={isPro}>
+    // Make the page not scrollable
+    <Layout
+      bodyClassName="mx-0 lg:overflow-hidden"
+      isAuth={isAuth}
+      className="h-screen"
+      isPro={isPro}
+    >
       {/* Main Content */}
-      <main className="flex relative sm:flex-col md:flex-col">
+      <main className="flex relative flex-col lg:flex-row">
         {/* left */}
         <div
-          className="overflow-scroll px-4 py-8 w-full lg:w-1/2 relative"
+          className="lg:flex-1 mx-8 overflow-scroll px-4 py-8 lg:w-1/2 relative"
           style={{ height: 'calc(100vh - 64px)' }}
         >
           <h1 className="text-3xl font-bold text-gray-900 mb-6">{oneLiner}</h1>
@@ -46,9 +51,8 @@ export default function LandingPage({ userId, isAuth, isPro }: Props) {
           <PrdForm isAuth={Boolean(user)} />
         </div>
         {/* right */}
-
         <div
-          className="relative lg:fixed right-0 bottom-0 lg:block lg:w-1/2 overflow-hidden sm:px-5 lg:h-full h-auto overflow-y-auto top-[64px]"
+          className="lg:flex-1 relative lg:block sm:px-5 lg:h-full h-auto overflow-y-auto"
           style={{
             height: 'calc(100vh - 64px)',
           }}
@@ -56,8 +60,6 @@ export default function LandingPage({ userId, isAuth, isPro }: Props) {
           <div className="absolute inset-0 bg-gradient-to-b from-pink-100 to-white pointer-events-none -z-10"></div>
 
           <PrdOutput isAuth={isAuth} isPro={isPro} />
-
-          <StickyActionBar />
         </div>
 
         {userId && (

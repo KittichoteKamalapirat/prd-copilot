@@ -4,8 +4,9 @@ import { PDFDocument, rgb } from 'pdf-lib'
 import { useStore } from '../lib/store'
 import { Button } from './ui/button'
 import { cn } from '../lib/utils'
+import { HTMLProps } from 'react'
 
-export const StickyActionBar = () => {
+export const ActionBar = ({ className }: HTMLProps<HTMLDivElement>) => {
   const { text } = useStore((state) => state.prd)
   const disabled = !text
 
@@ -44,7 +45,7 @@ export const StickyActionBar = () => {
   }
 
   return (
-    <div className="fixed left-1/2 mx-4 bottom-2 right-0 px-2 py-2 font-semibold text-sm text-slate-900 bg-slate-50/90 backdrop-blur-sm ring-1 ring-slate-900/10 space-x-4 rounded-xl shadow-2xl sm:mt-4 my-6 h-auto min-h-[5rem] sm:min-h-[1rem]">
+    <div className={className}>
       <div className="flex items-center justify-between gap-1 sm:gap-4 text-white text-sm font-bold font-mono leading-6 bg-stripes-indigo rounded-lg h-full">
         <Button
           onClick={handleCopy}
