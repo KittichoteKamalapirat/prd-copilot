@@ -74,6 +74,7 @@ const baseSchema = z.object({
   // userFeedback: z.string(),
   successMetrics: z.string().optional(),
   additional: z.string().optional(),
+  audience: z.string().min(1, 'Audience is required'),
 
   //   checkboxes
   hasObjective: z.boolean(),
@@ -93,7 +94,6 @@ const baseSchema = z.object({
 const solveProblemSchema = baseSchema.extend({
   type: z.literal(PRD_TYPE.SOLVE_PROBLEM),
   problem: z.string().min(1, 'Problem is required'),
-  audience: z.string().min(1, 'Audience is required'),
   solution: z.string().min(1, 'Solution is required'),
 })
 
@@ -101,7 +101,6 @@ const createMVPSchema = baseSchema.extend({
   type: z.literal(PRD_TYPE.CREATE_MVP),
   productName: z.string().min(1, 'Product name is required'),
   valueProp: z.string().min(1, 'Value proposition is required'),
-  audience: z.string().min(1, 'Audience is required'),
   featureList: z.string().min(1, 'Features are required'),
 })
 
@@ -109,8 +108,7 @@ const addFeatureSchema = baseSchema.extend({
   type: z.literal(PRD_TYPE.ADD_FEATURE),
   existingProduct: z.string().min(1, 'Existing product is required'),
   featureName: z.string().min(1, 'Feature name is required'),
-  problem: z.string().min(1, 'Problem is required'),
-  audience: z.string().min(1, 'Audiences is required'),
+  why: z.string().min(1, 'Feature name is required'),
 })
 
 const othersSchema = baseSchema.extend({
@@ -118,32 +116,32 @@ const othersSchema = baseSchema.extend({
   problem: z.string().min(1, 'Problem is required'),
 })
 
-const improveEfficiencySchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.IMPROVE_EFFICIENCY),
-  inefficiencies: z.string().min(1, 'Inefficiencies are required'),
-  metrics: z.string().min(1, 'Metrics are required'),
-})
+// const improveEfficiencySchema = baseSchema.extend({
+//   type: z.literal(PRD_TYPE.IMPROVE_EFFICIENCY),
+//   inefficiencies: z.string().min(1, 'Inefficiencies are required'),
+//   metrics: z.string().min(1, 'Metrics are required'),
+// })
 
-const enhanceUxSchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.ENHANCE_UX),
-  inefficiencies: z.string().min(1, 'Inefficiencies are required'),
-  metrics: z.string().min(1, 'Metrics are required'),
-})
+// const enhanceUxSchema = baseSchema.extend({
+//   type: z.literal(PRD_TYPE.ENHANCE_UX),
+//   inefficiencies: z.string().min(1, 'Inefficiencies are required'),
+//   metrics: z.string().min(1, 'Metrics are required'),
+// })
 
 const prdFormSchema = z.discriminatedUnion('type', [
   solveProblemSchema,
-  improveEfficiencySchema,
-  enhanceUxSchema,
   createMVPSchema,
   addFeatureSchema,
   othersSchema,
+  // improveEfficiencySchema,
+  // enhanceUxSchema,
 ])
 
 type SolveProblemFormData = z.infer<typeof solveProblemSchema>
 type CreateMVPFormData = z.infer<typeof createMVPSchema>
 type AddFeatureFormData = z.infer<typeof addFeatureSchema>
 type OthersFormData = z.infer<typeof othersSchema>
-type FormData = z.infer<typeof prdFormSchema>
+export type PrdFormData = z.infer<typeof prdFormSchema>
 
 interface Props {
   isAuth?: boolean
@@ -156,7 +154,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
     watch,
     control,
     formState: { errors, isValid, isDirty },
-  } = useForm<FormData>({
+  } = useForm<PrdFormData>({
     resolver: zodResolver(prdFormSchema),
     defaultValues: {
       hasObjective: true,
@@ -218,7 +216,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
     }, 10) // Adjust the interval time as needed
   }
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: PrdFormData) => {
     if (isAuth) {
       handleFakeSubmit()
       localStorage.setItem(LocalStorage.UNAUTH_PRD_INPUT, JSON.stringify(data))
@@ -283,6 +281,16 @@ export const PrdForm = ({ isAuth = false }: Props) => {
             />
             {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
           </div>
+
+          <div>
+            <Label htmlFor="audience">Who are the audiences?</Label>
+            <Input id="audience" {...register('audience')} />
+            {(errors as FieldErrorsImpl<SolveProblemFormData>).audience && (
+              <p className="mt-1 text-sm text-red-500">
+                {(errors as FieldErrorsImpl<SolveProblemFormData>).audience?.message}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -317,15 +325,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
                   </p>
                 )}
               </div>
-              <div>
-                <Label htmlFor="audience">Who are the audiences?</Label>
-                <Input id="audience" {...register('audience')} />
-                {(errors as FieldErrorsImpl<SolveProblemFormData>).audience && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrorsImpl<SolveProblemFormData>).audience?.message}
-                  </p>
-                )}
-              </div>
+
               <div>
                 <Label htmlFor="solution">Give an Overview / Explanation</Label>
                 <Textarea
@@ -366,15 +366,7 @@ export const PrdForm = ({ isAuth = false }: Props) => {
                   </p>
                 )}
               </div>
-              <div>
-                <Label htmlFor="audience">Who are the audiences?</Label>
-                <Input id="audience" {...register('audience')} />
-                {(errors as FieldErrorsImpl<CreateMVPFormData>).audience && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrorsImpl<CreateMVPFormData>).audience?.message}
-                  </p>
-                )}
-              </div>
+
               <div>
                 <Label htmlFor="solution">What are the main features?</Label>
                 <Textarea
@@ -413,24 +405,6 @@ export const PrdForm = ({ isAuth = false }: Props) => {
                 {(errors as FieldErrorsImpl<AddFeatureFormData>).featureName && (
                   <p className="mt-1 text-sm text-red-500">
                     {(errors as FieldErrors<AddFeatureFormData>).featureName?.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="problem">Why do we need this feature?</Label>
-                <Input id="problem" {...register('problem')} />
-                {(errors as FieldErrorsImpl<AddFeatureFormData>).problem && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrors<AddFeatureFormData>).problem?.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="audience">Who are the audiences?</Label>
-                <Input id="audience" {...register('audience')} />
-                {(errors as FieldErrorsImpl<AddFeatureFormData>).audience && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {(errors as FieldErrorsImpl<AddFeatureFormData>).audience?.message}
                   </p>
                 )}
               </div>

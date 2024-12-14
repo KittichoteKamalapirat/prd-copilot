@@ -3,4 +3,5 @@ export interface CheckoutSessionProps {
   priceId: string
   successUrl: string
   cancelUrl: string
+  prdId: string
 }

@@ -1,4 +1,5 @@
 'use client'
+import { v4 as uuidv4 } from 'uuid'
 
 import { MemberPlan } from '@/app/enums/MemberPlan'
 import { Spinner } from '@/components/ui/spinner'
@@ -7,6 +8,7 @@ import { ObjectValues } from '@/lib/utils'
 import { loadStripe } from '@stripe/stripe-js'
 import { useState } from 'react'
 import { Button } from './button'
+import { useCreatePrdInFirestore } from '../../hooks/useCreatePrdInFirestore'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -23,6 +25,7 @@ export function PaymentButton({
 
   ...rest
 }: Props) {
+  const { createPrdInFirestore, isLoading: isCreatingPrd } = useCreatePrdInFirestore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const stripePriceId = (() => {
     switch (plan) {
@@ -40,11 +43,15 @@ export function PaymentButton({
 
       if (!stripe) throw new Error('Stripe failed to load')
 
+      const prdId = uuidv4()
+      createPrdInFirestore(userId, prdId)
+
       const body: CheckoutSessionProps = {
         priceId: stripePriceId,
         successUrl: `${window.location.origin}/success`,
         cancelUrl: `${window.location.origin}/cancel`,
         userId,
+        prdId,
       }
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -66,7 +73,7 @@ export function PaymentButton({
 
   return (
     <Button onClick={handlePayment} {...rest}>
-      {isLoading ? <Spinner className="text-white" /> : label}
+      {isLoading || isCreatingPrd ? <Spinner className="text-white" /> : label}
     </Button>
   )
 }

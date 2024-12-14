@@ -1,13 +1,20 @@
 import { initAdmin } from '@/firebase/firebaseAdmin'
 import { stripe } from '@/lib/stripe'
 import { FbSubscription } from '@/lib/types/User'
+import { Metadata } from '@stripe/stripe-js'
 import * as admin from 'firebase-admin'
 import { getFirestore } from 'firebase-admin/firestore'
 import { Timestamp } from 'firebase/firestore'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { FbPrd } from '../../../../lib/types/FbPrd'
+import { generateAndSaveRequirements } from '../../generate-requirement'
 
+interface WebhookMetadata extends Metadata {
+  firebaseUserId: string
+  prdId: string
+}
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
 export async function POST(req: Request) {
@@ -34,18 +41,26 @@ export async function POST(req: Request) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
 
-        console.log(JSON.stringify(session, null, 4))
         // Handle successful payment
         // Retrieve the customer ID and user ID from the session
         const customerId = session.customer as string
-        const userId = (session.metadata as { firebaseUserId: string }).firebaseUserId // TODO: centralize types
+        const { firebaseUserId, prdId } = session.metadata as WebhookMetadata // TODO: centralize types
 
         // Fetch the user document from Firestore
         await initAdmin() // need to call this before getFirestore
         const firestore = getFirestore()
-        const userDocRef = await firestore.collection('users').doc(userId)
+        const userDocRef = await firestore.collection('users').doc(firebaseUserId)
+        const prdDocRef = await userDocRef.collection('prds').doc(prdId)
 
         const userDoc = await userDocRef.get()
+        const prdDoc = await prdDocRef.get()
+
+        // generate prd
+        generateAndSaveRequirements({
+          userId: firebaseUserId,
+          prdId,
+          input: prdDoc.data() as FbPrd,
+        })
 
         // Retrieve the session with expanded line items
         const sessionWithLineItems = await stripe.checkout.sessions.retrieve(session.id, {

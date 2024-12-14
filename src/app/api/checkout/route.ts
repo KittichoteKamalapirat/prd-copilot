@@ -7,7 +7,8 @@ const TRIAL_PERIOD_DAYS = 7
 
 export async function POST(req: Request) {
   try {
-    const { userId, priceId, successUrl, cancelUrl } = (await req.json()) as CheckoutSessionProps
+    const { userId, priceId, successUrl, cancelUrl, prdId } =
+      (await req.json()) as CheckoutSessionProps
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
       },
       success_url: successUrl,
       cancel_url: cancelUrl,
-      metadata: { firebaseUserId: userId }, // Add user ID to metadata
+      metadata: { firebaseUserId: userId, prdId }, // Add user ID to metadata
       expand: ['line_items'], // so I can get priceId and product ID in webhooks
     })
 

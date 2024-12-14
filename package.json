@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prepare": "husky",
     "stripe:webhook": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
-    "stripe:trigger": "stripe trigger checkout.session.completed --add checkout_session:metadata.firebaseUserId=5gA6uiiA1Ce17GiHxtQ46gJijZe2 --add checkout_session:customer=cus_RN7gQDK3yB5HoI"
+    "stripe:trigger": "stripe trigger checkout.session.completed --add checkout_session:metadata.firebaseUserId=5gA6uiiA1Ce17GiHxtQ46gJijZe2 --add checkout_session:metadata.prdId=04508478-bcf4-4126-a4fa-8a7f204b415a --add checkout_session:customer=cus_RN7gQDK3yB5HoI"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -54,6 +54,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "uninstall": "^0.0.0",
+    "uuid": "^11.0.3",
     "zod": "^3.23.8",
     "zustand": "^5.0.2"
   },
