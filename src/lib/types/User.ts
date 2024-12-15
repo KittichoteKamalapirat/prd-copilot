@@ -17,6 +17,9 @@ export interface FbUser extends Omit<BaseUser, 'displayName' | 'providerId' | 'p
 
   // stripe
   subscription?: FbSubscription
+
+  // extra
+  isPro: boolean
 }
 
 export interface FbSubscription {
