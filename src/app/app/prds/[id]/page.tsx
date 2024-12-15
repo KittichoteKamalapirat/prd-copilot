@@ -22,7 +22,7 @@ export default async function PRDDetailPage(props: { params: Params }) {
     notFound()
   }
 
-  const userId = tokens.decodedToken.uid
+  const user = tokens.decodedToken
 
-  return <PrdDetailPage userId={userId} prdId={prdId} />
+  return <PrdDetailPage user={user} prdId={prdId} />
 }

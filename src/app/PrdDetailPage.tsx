@@ -4,17 +4,18 @@ import { Suspense } from 'react'
 import PrdDetail from '../components/PrdDetail'
 import ProGatekeeper from '../components/PrdGatekeeper'
 import { Spinner } from '../components/ui/spinner'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 
 interface Props {
-  userId: string
+  user: DecodedIdToken
   prdId: string
 }
 
-export default function PrdDetailPage({ userId, prdId }: Props) {
+export default function PrdDetailPage({ user, prdId }: Props) {
   return (
-    <ProGatekeeper userId={userId}>
+    <ProGatekeeper user={user}>
       <Suspense fallback={<Spinner />}>
-        <PrdDetail userId={userId} prdId={prdId} />
+        <PrdDetail user={user} prdId={prdId} />
       </Suspense>
     </ProGatekeeper>
   )
