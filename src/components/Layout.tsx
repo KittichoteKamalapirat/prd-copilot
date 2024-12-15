@@ -1,17 +1,18 @@
 import { ReactNode } from 'react'
 import { cn } from '../lib/utils'
 import Navbar from './Navbar'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 
 interface LayoutProps extends React.HTMLProps<HTMLDivElement> {
   children: ReactNode
-  isAuth: boolean
+  user?: DecodedIdToken
   isPro: boolean
   bodyClassName?: string
 }
 
 export default function Layout({
-  isAuth,
   isPro,
+  user,
   children,
   className,
   bodyClassName = 'flex-1 container mx-auto',
@@ -19,7 +20,7 @@ export default function Layout({
 }: LayoutProps) {
   return (
     <div className={cn('flex flex-col', className)} {...rest}>
-      <Navbar isAuth={isAuth} isPro={isPro} />
+      <Navbar user={user} isPro={isPro} />
       <main className={bodyClassName}>{children}</main>
     </div>
   )

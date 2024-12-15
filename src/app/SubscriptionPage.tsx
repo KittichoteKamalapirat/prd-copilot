@@ -8,6 +8,7 @@ import { formatCentsToDollars } from '@/app/utils/currency'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import dayjs from 'dayjs'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 import Layout from '../components/Layout'
 import PricingSectionCards from '../components/PricingSectionCards'
 import { Badge } from '../components/ui/badge'
@@ -15,12 +16,11 @@ import { Spinner } from '../components/ui/spinner'
 import { useSubIsPro } from '../hooks/useSubIsPro'
 
 interface Props {
-  userId: string
-  email?: string
+  user: DecodedIdToken
 }
 
-export const SubscriptionPage = ({ userId }: Props) => {
-  const { isPro, loading, user } = useSubIsPro({ userId })
+export const SubscriptionPage = ({ user: authUser }: Props) => {
+  const { isPro, loading, user } = useSubIsPro({ userId: authUser.uid })
 
   const customerId = user?.subscription?.customerId
 
@@ -51,16 +51,16 @@ export const SubscriptionPage = ({ userId }: Props) => {
 
   if (loading)
     return (
-      <Layout isAuth={true} isPro={isPro}>
+      <Layout user={authUser} isPro={isPro}>
         <Spinner className="mt-12" />
       </Layout>
     )
 
   if (!isPro || !customerId)
     return (
-      <Layout isAuth={true} isPro={isPro}>
+      <Layout user={authUser} isPro={isPro}>
         <PricingSectionCards
-          userId={userId}
+          userId={authUser.uid}
           title="Become a better PM"
           description="Subscribe to unlock all features"
         />
@@ -68,7 +68,7 @@ export const SubscriptionPage = ({ userId }: Props) => {
     )
 
   return (
-    <Layout isAuth={true} isPro={isPro}>
+    <Layout user={authUser} isPro={isPro}>
       <div className="grid gap-6 lg:gap-8">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold tracking-tighter">Manage Subscription</h1>

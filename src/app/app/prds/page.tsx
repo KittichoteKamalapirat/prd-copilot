@@ -16,5 +16,5 @@ export default async function Page() {
     notFound()
   }
 
-  return <PrdListingPage userId={tokens.decodedToken.uid} email={tokens.decodedToken.email || ''} />
+  return <PrdListingPage user={tokens.decodedToken} />
 }

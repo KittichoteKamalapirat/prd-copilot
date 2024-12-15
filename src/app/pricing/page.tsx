@@ -11,6 +11,7 @@ export default async function Page() {
     serviceAccount: serverConfig.serviceAccount,
   })
 
-  const userId = tokens?.decodedToken.uid
-  return <PricingPage userId={userId} />
+  const user = tokens?.decodedToken
+
+  return <PricingPage user={user} />
 }

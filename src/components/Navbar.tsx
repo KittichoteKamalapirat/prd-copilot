@@ -11,23 +11,27 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { getAuth, signOut } from 'firebase/auth'
 import { Loader, LogOut, MenuIcon } from 'lucide-react'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import UserAvatarFallback from '../app/UserAvatarFallback'
 import { brandName } from '../constants/brand'
 import { app } from '../firebase/config'
 import { urlResolver } from '../lib/urlResolver'
 
 interface Props {
-  isAuth: boolean
+  user?: DecodedIdToken
   isPro: boolean
 }
 
-export default function Navbar({ isAuth, isPro }: Props) {
+export default function Navbar({ user, isPro }: Props) {
+  const isAuth = Boolean(user)
   const router = useRouter()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
+  console.log('user?.picture', user?.picture)
   async function handleLogout(e: React.MouseEvent | Event) {
     e.stopPropagation()
     setIsLoggingOut(true)
@@ -62,13 +66,21 @@ export default function Navbar({ isAuth, isPro }: Props) {
               Pricing
             </Link>
           )}
+
           {isAuth ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer">
-                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                  <AvatarFallback>YYY</AvatarFallback>
-                </Avatar>
+                {user?.picture ? (
+                  <Image
+                    src={user?.picture}
+                    alt="User avatar"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <UserAvatarFallback user={user} />
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {isPro && (
@@ -111,12 +123,8 @@ export default function Navbar({ isAuth, isPro }: Props) {
                 <>
                   <Card className="flex gap-2 items-center p-4 w-full">
                     <Avatar className="cursor-pointer h-8 w-8">
-                      <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                      <AvatarFallback>U</AvatarFallback>
-                      <Avatar className="cursor-pointer h-8 w-8">
-                        <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                        <AvatarFallback>U</AvatarFallback>
-                      </Avatar>
+                      <AvatarImage src={user?.picture} alt="User avatar" />
+                      <AvatarFallback>{user?.email?.[0]}</AvatarFallback>
                     </Avatar>
                   </Card>
                   {isPro && (

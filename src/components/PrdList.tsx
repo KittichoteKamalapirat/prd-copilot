@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import { initAdmin } from '../firebase/firebaseAdmin'
 import { getFirestore } from 'firebase-admin/firestore'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 
 type PRDType = 'SOLVE_PROBLEM' | 'CREATE_MVP' | 'ADD_FEATURE' | 'OTHERS'
 
@@ -38,8 +39,8 @@ function getCardTitle(prd: PRD): string {
   }
 }
 
-export default async function PRDList({ userId }: { userId: string }) {
-  const prds = await getPRDs(userId)
+export default async function PRDList({ user }: { user: DecodedIdToken }) {
+  const prds = await getPRDs(user.uid)
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

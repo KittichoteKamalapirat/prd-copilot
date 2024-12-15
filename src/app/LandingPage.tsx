@@ -2,26 +2,27 @@
 
 import { Button } from '@/components/ui/button'
 import { oneLiner } from '@/constants/brand'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
+import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import { MyDialog } from '../components/my-dialog'
 import { PrdForm, PrdFormData } from '../components/PrdForm'
 import { PrdOutput } from '../components/PrdOutput/PrdOutput'
 import PricingSectionCards from '../components/PricingSectionCards'
 import { UserAuthForm } from '../components/user-auth-form'
-import { useAuthUser } from '../hooks/useAuthUser'
 import { useStore } from '../lib/store'
-import { useEffect } from 'react'
 
 interface Props {
   isAuth: boolean
   isPro: boolean
-  userId?: string
+  user?: DecodedIdToken
   initialData?: PrdFormData
   output?: string
 }
 
-export default function LandingPage({ userId, isAuth, isPro, initialData, output }: Props) {
-  const { user } = useAuthUser()
+export default function LandingPage({ user, isAuth, isPro, initialData, output }: Props) {
+  const userId = user?.uid
+
   const { set, showUpsellSheet, showAuthModal } = useStore((state) => state.display)
   const { set: setPrd } = useStore((state) => state.prd)
 
@@ -31,12 +32,7 @@ export default function LandingPage({ userId, isAuth, isPro, initialData, output
   return (
     // This page is false because
     // Make the page not scrollable
-    <Layout
-      bodyClassName="mx-0 lg:overflow-hidden"
-      isAuth={isAuth}
-      className="h-screen"
-      isPro={isPro}
-    >
+    <Layout bodyClassName="mx-0 lg:overflow-hidden" user={user} className="h-screen" isPro={isPro}>
       {/* Main Content */}
       <main className="flex relative flex-col lg:flex-row">
         {/* left */}

@@ -4,14 +4,15 @@ import { useSubIsPro } from '@/hooks/useSubIsPro'
 import { ReactNode } from 'react'
 import { Spinner } from './ui/spinner'
 import ErrorTile from './ErrorTile'
+import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 
 interface ProGatekeeperProps {
-  userId: string
+  user: DecodedIdToken
   children: ReactNode
 }
 
-export default function ProGatekeeper({ userId, children }: ProGatekeeperProps) {
-  const { isPro, loading } = useSubIsPro({ userId })
+export default function ProGatekeeper({ user, children }: ProGatekeeperProps) {
+  const { isPro, loading } = useSubIsPro({ userId: user.uid })
 
   if (loading) {
     return <Spinner />
