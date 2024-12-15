@@ -8,7 +8,7 @@ interface Props {
 
 export const PricingPage = ({ user }: Props) => {
   return (
-    //   TODO: fix isPro is false
+    // TODO: fix isPro is false
     <Layout user={user} isPro={false}>
       <PricingSectionCards userId={user?.uid} />
     </Layout>
