@@ -19,7 +19,7 @@ export const SuccessPage = ({ userId }: Props) => {
     if (isPro) {
       router.push(urlResolver.appHome)
     }
-  }, [isPro])
+  }, [isPro, router])
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="mx-auto max-w-md text-center">
