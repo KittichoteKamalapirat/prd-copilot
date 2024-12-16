@@ -31,7 +31,6 @@ export default function Navbar({ user, isPro }: Props) {
   const router = useRouter()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  console.log('user?.picture', user?.picture)
   async function handleLogout(e: React.MouseEvent | Event) {
     e.stopPropagation()
     setIsLoggingOut(true)
@@ -93,7 +92,7 @@ export default function Navbar({ user, isPro }: Props) {
 
                 <DropdownMenuItem onSelect={handleLogout}>
                   {isLoggingOut ? <Loader /> : <LogOut />}
-                  Log out 2
+                  Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -142,7 +141,7 @@ export default function Navbar({ user, isPro }: Props) {
                     className="w-full justify-start p-0"
                   >
                     {isLoggingOut ? <Loader /> : <LogOut />}
-                    Log out 1
+                    Log out
                   </Button>
                 </>
               ) : (

@@ -6,6 +6,7 @@ import { Icons } from '@/components/icons'
 import { buttonVariants } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { signInWithGoogle } from '../firebase/auth'
+import { urlResolver } from '../lib/urlResolver'
 
 interface Props {
   disabled?: boolean
@@ -28,7 +29,7 @@ function GoogleSignin({ disabled }: Props) {
           },
         })
 
-        router.push('/')
+        router.push(urlResolver.appHome)
       }}
       disabled={disabled || isGoogleLoading}
     >
