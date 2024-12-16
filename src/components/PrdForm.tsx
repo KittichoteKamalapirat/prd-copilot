@@ -75,7 +75,7 @@ const baseSchema = z.object({
   // userFeedback: z.string(),
   successMetrics: z.string().optional(),
   additional: z.string().optional(),
-  audience: z.string().min(1, 'Audience is required'),
+  audience: z.string().optional(),
 
   //   checkboxes
   hasObjective: z.boolean(),
@@ -109,7 +109,7 @@ const addFeatureSchema = baseSchema.extend({
   type: z.literal(PRD_TYPE.ADD_FEATURE),
   existingProduct: z.string().min(1, 'Existing product is required'),
   featureName: z.string().min(1, 'Feature name is required'),
-  why: z.string().min(1, 'Feature name is required'),
+  why: z.string().min(1, 'Why is required'),
 })
 
 const othersSchema = baseSchema.extend({
@@ -146,10 +146,11 @@ export type PrdFormData = z.infer<typeof prdFormSchema>
 
 interface Props {
   isAuth?: boolean
+  isPro: boolean
   initialData?: PrdFormData
 }
 
-export const PrdForm = ({ isAuth = false, initialData }: Props) => {
+export const PrdForm = ({ isPro, initialData }: Props) => {
   const {
     register,
     handleSubmit,
@@ -217,9 +218,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
   }
 
   const onSubmit = async (data: PrdFormData) => {
-    if (isAuth) {
+    if (!isPro) {
       handleFakeSubmit(data)
       localStorage.setItem(LocalStorage.UNAUTH_PRD_INPUT, JSON.stringify(data))
+      return
     }
 
     try {
@@ -254,7 +256,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
         <div className="space-y-4">
           <div>
             <Label htmlFor="type" className="text-lg font-bold text-gray-800 mb-5">
-              What kind of PRD are you trying to create?
+              What kind of PRD are you trying to create? <span className="text-red-500">*</span>
             </Label>
             <Controller
               name="type"
@@ -281,16 +283,6 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
             />
             {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
           </div>
-
-          <div>
-            <Label htmlFor="audience">Who are the audiences?</Label>
-            <Input id="audience" {...register('audience')} />
-            {(errors as FieldErrorsImpl<SolveProblemFormData>).audience && (
-              <p className="mt-1 text-sm text-red-500">
-                {(errors as FieldErrorsImpl<SolveProblemFormData>).audience?.message}
-              </p>
-            )}
-          </div>
         </div>
       </div>
 
@@ -307,7 +299,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
           {selectedPrdType === PRD_TYPE.SOLVE_PROBLEM && (
             <>
               <div>
-                <Label htmlFor="problem">What is the problem you are trying to solve?</Label>
+                <Label htmlFor="problem">
+                  What is the problem you are trying to solve?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Textarea
                   id="problem"
                   rows={4}
@@ -327,7 +322,9 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
               </div>
 
               <div>
-                <Label htmlFor="solution">Give an Overview / Explanation</Label>
+                <Label htmlFor="solution">
+                  What is the solution?<span className="text-red-500">*</span>
+                </Label>
                 <Textarea
                   id="solution"
                   rows={4}
@@ -348,7 +345,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
           {selectedPrdType === PRD_TYPE.CREATE_MVP && (
             <>
               <div>
-                <Label htmlFor="productName">What is the product name?</Label>
+                <Label htmlFor="productName">
+                  What is the product name?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Input id="productName" {...register('productName')} />
                 {(errors as FieldErrorsImpl<CreateMVPFormData>).productName && (
                   <p className="mt-1 text-sm text-red-500">
@@ -358,7 +358,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
               </div>
 
               <div>
-                <Label htmlFor="valueProp">What is the value proposition?</Label>
+                <Label htmlFor="valueProp">
+                  What is the value proposition?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Input id="valueProp" {...register('valueProp')} />
                 {(errors as FieldErrorsImpl<CreateMVPFormData>).valueProp && (
                   <p className="mt-1 text-sm text-red-500">
@@ -368,7 +371,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
               </div>
 
               <div>
-                <Label htmlFor="solution">What are the main features?</Label>
+                <Label htmlFor="solution">
+                  What are the main features?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Textarea
                   id="featureList"
                   rows={4}
@@ -391,6 +397,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
               <div>
                 <Label htmlFor="existingProduct">
                   Tell us a bit more about the existing product.
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input id="existingProduct" {...register('existingProduct')} />
                 {(errors as FieldErrorsImpl<AddFeatureFormData>).existingProduct && (
@@ -400,7 +407,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                 )}
               </div>
               <div>
-                <Label htmlFor="featureName">What is the feature name?</Label>
+                <Label htmlFor="featureName">
+                  What is the feature name?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Input id="featureName" {...register('featureName')} />
                 {(errors as FieldErrorsImpl<AddFeatureFormData>).featureName && (
                   <p className="mt-1 text-sm text-red-500">
@@ -414,7 +424,10 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
           {selectedPrdType === PRD_TYPE.OTHERS && (
             <>
               <div>
-                <Label htmlFor="problem">What is the problem you are trying to solve?</Label>
+                <Label htmlFor="problem">
+                  What is the problem you are trying to solve?
+                  <span className="text-red-500">*</span>
+                </Label>
                 <Textarea
                   id="problem"
                   rows={4}
@@ -434,6 +447,16 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
           )}
 
           <div>
+            <Label htmlFor="audience">Who are the audiences?</Label>
+            <Input id="audience" {...register('audience')} />
+            {(errors as FieldErrorsImpl<SolveProblemFormData>).audience && (
+              <p className="mt-1 text-sm text-red-500">
+                {(errors as FieldErrorsImpl<SolveProblemFormData>).audience?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
             <Label htmlFor="successMetrics">What are the success metrics?</Label>
             <Textarea
               id="successMetrics"
@@ -448,7 +471,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
           </div>
 
           <div>
-            <Label htmlFor="additional">Any additional note?</Label>
+            <Label htmlFor="additional">Additional note?</Label>
             <Textarea
               id="additional"
               rows={4}
@@ -472,7 +495,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                     <span className="text-pink-500">3.</span> Sections to include
                   </div>
                   <div className="space-y-4">
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasObjective"
                         control={control}
@@ -486,7 +509,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasObjective">Objective</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasSuccessMetrics"
                         control={control}
@@ -500,7 +523,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasSuccessMetrics">Success Metrics</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasPOC"
                         control={control}
@@ -514,7 +537,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasPOC">Point of Contact</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasSecurity"
                         control={control}
@@ -528,7 +551,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasSecurity">Security</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasFunctionalReq"
                         control={control}
@@ -542,7 +565,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasFunctionalReq">Functional Requirements</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasNonFunctionalReq"
                         control={control}
@@ -556,7 +579,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasNonFunctionalReq">Non-Functional Requirements</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasStakeholders"
                         control={control}
@@ -570,7 +593,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasStakeholders">Stakeholders</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasBackground"
                         control={control}
@@ -584,7 +607,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasBackground">Background</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasConstraints"
                         control={control}
@@ -598,7 +621,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasConstraints">Constraints</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasAssumptions"
                         control={control}
@@ -612,7 +635,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasAssumptions">Assumptions</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasTimeline"
                         control={control}
@@ -626,7 +649,7 @@ export const PrdForm = ({ isAuth = false, initialData }: Props) => {
                       />
                       <Label htmlFor="hasTimeline">Timeline</Label>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-center">
                       <Controller
                         name="hasDependency"
                         control={control}

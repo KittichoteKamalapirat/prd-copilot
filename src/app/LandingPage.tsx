@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { oneLiner } from '@/constants/brand'
 import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 import { useEffect } from 'react'
@@ -44,14 +43,14 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
           <p className="text-gray-500 mb-6">
             Provide key details to assist the bot in generating a strong starting point.
           </p>
-          <Button
+          {/* <Button
             size="lg"
             className="p-4 font-mono font-bold flex-none rounded-lg flex items-center justify-center bg-gray-50 border border-gray-300 text-gray-600 hover:bg-gray-100 w-full mb-8 mt-16"
           >
             Try with a sample requirement
-          </Button>
+          </Button> */}
 
-          <PrdForm isAuth={Boolean(user)} initialData={initialData} />
+          <PrdForm isAuth={Boolean(user)} initialData={initialData} isPro={isPro} />
         </div>
         {/* right */}
         <div
