@@ -1,5 +1,6 @@
 'use client'
 
+import { DownloadOptions } from '@/components/DownloadOptions'
 import { oneLiner } from '@/constants/brand'
 import { PrdFormData } from '@/lib/schemas/prdSchemas'
 import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
@@ -23,7 +24,9 @@ interface Props {
 export default function LandingPage({ user, isAuth, isPro, initialData, output }: Props) {
   const userId = user?.uid
 
-  const { set, showUpsellSheet, showAuthModal } = useStore((state) => state.display)
+  const { set, showUpsellSheet, showAuthModal, showDownloadModal } = useStore(
+    (state) => state.display
+  )
   const { set: setPrd } = useStore((state) => state.prd)
 
   useEffect(() => {
@@ -80,6 +83,13 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
 
         <MyDialog open={showAuthModal} setOpen={() => set({ showAuthModal: !showAuthModal })}>
           <UserAuthForm isRegister={true} />
+        </MyDialog>
+
+        <MyDialog
+          open={showDownloadModal}
+          setOpen={() => set({ showDownloadModal: !showDownloadModal })}
+        >
+          <DownloadOptions />
         </MyDialog>
       </main>
     </Layout>

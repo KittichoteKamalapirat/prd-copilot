@@ -16,6 +16,7 @@ type PropsWithSet<Props = Record<string, any>> = Props & {
 interface DisplayStore {
   showUpsellSheet: boolean
   showAuthModal: boolean
+  showDownloadModal: boolean
 }
 
 interface PrdStore {
@@ -92,6 +93,7 @@ export const useStore = create<IStore>((set, get) => {
       set: factorySetFunc<IStore['display']>('display'),
       showUpsellSheet: false,
       showAuthModal: false,
+      showDownloadModal: false,
     },
     prd: {
       set: factorySetFunc<IStore['prd']>('prd'),
