@@ -36,6 +36,18 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
       <main className="flex relative flex-col lg:flex-row">
         {/* left */}
         <div
+          className="lg:flex-1 relative lg:block sm:px-5 lg:h-full h-auto overflow-y-auto"
+          style={{
+            height: 'calc(100vh - 64px)',
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-neutral-200 to-white pointer-events-none -z-10"></div>
+
+          <PrdOutput isAuth={isAuth} isPro={isPro} />
+        </div>
+
+        {/* right */}
+        <div
           className="lg:flex-1 mx-8 overflow-scroll px-4 py-8 lg:w-1/2 relative"
           style={{ height: 'calc(100vh - 64px)' }}
         >
@@ -52,18 +64,6 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
 
           <PrdForm isAuth={Boolean(user)} initialData={initialData} isPro={isPro} />
         </div>
-        {/* right */}
-        <div
-          className="lg:flex-1 relative lg:block sm:px-5 lg:h-full h-auto overflow-y-auto"
-          style={{
-            height: 'calc(100vh - 64px)',
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-pink-100 to-white pointer-events-none -z-10"></div>
-
-          <PrdOutput isAuth={isAuth} isPro={isPro} />
-        </div>
-
         {userId && (
           <MyDialog
             open={showUpsellSheet}

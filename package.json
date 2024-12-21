@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "stripe:webhook": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "stripe:webhook:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
     "stripe:trigger": "stripe trigger checkout.session.completed --add checkout_session:metadata.firebaseUserId=5gA6uiiA1Ce17GiHxtQ46gJijZe2 --add checkout_session:metadata.prdId=04508478-bcf4-4126-a4fa-8a7f204b415a --add checkout_session:customer=cus_RN7gQDK3yB5HoI"
   },
   "lint-staged": {

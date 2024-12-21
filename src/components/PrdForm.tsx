@@ -18,15 +18,22 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  AddFeatureFormData,
+  CreateMVPFormData,
+  OthersFormData,
+  PrdFormData,
+  prdFormSchema,
+  SolveProblemFormData,
+} from '@/lib/schemas/prdSchemas'
 import { PRD_TYPE } from '@/lib/types/PrdType'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SendHorizontal } from 'lucide-react'
 import { Controller, FieldErrors, FieldErrorsImpl, useForm } from 'react-hook-form'
-import * as z from 'zod'
 import { LocalStorage } from '../app/enums/LocalStorage'
+import { generateFakeChunks } from '../constants/generateFakeChunks'
 
 import { useStore } from '../lib/store'
-import { generateFakeChunks } from '../constants/generateFakeChunks'
 
 interface Option {
   label: string
@@ -67,55 +74,6 @@ export const PRD_TYPE_OPTIONS: Option[] = [
   // },
 ]
 // Define schema using zod
-const baseSchema = z.object({
-  // productName: z.string().min(1, 'Product name is required'),
-
-  // overview: z.string().min(1, 'Overview is required'),
-
-  // userFeedback: z.string(),
-  successMetrics: z.string().optional(),
-  additional: z.string().optional(),
-  audience: z.string().optional(),
-
-  //   checkboxes
-  hasObjective: z.boolean(),
-  hasSuccessMetrics: z.boolean(),
-  hasPOC: z.boolean(),
-  hasSecurity: z.boolean(),
-  hasFunctionalReq: z.boolean(),
-  hasNonFunctionalReq: z.boolean(),
-  hasStakeholders: z.boolean(),
-  hasBackground: z.boolean(),
-  hasConstraints: z.boolean(),
-  hasAssumptions: z.boolean(),
-  hasTimeline: z.boolean(),
-  hasDependency: z.boolean(),
-})
-
-const solveProblemSchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.SOLVE_PROBLEM),
-  problem: z.string().min(1, 'Problem is required'),
-  solution: z.string().min(1, 'Solution is required'),
-})
-
-const createMVPSchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.CREATE_MVP),
-  productName: z.string().min(1, 'Product name is required'),
-  valueProp: z.string().min(1, 'Value proposition is required'),
-  featureList: z.string().min(1, 'Features are required'),
-})
-
-const addFeatureSchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.ADD_FEATURE),
-  existingProduct: z.string().min(1, 'Existing product is required'),
-  featureName: z.string().min(1, 'Feature name is required'),
-  why: z.string().min(1, 'Why is required'),
-})
-
-const othersSchema = baseSchema.extend({
-  type: z.literal(PRD_TYPE.OTHERS),
-  problem: z.string().min(1, 'Problem is required'),
-})
 
 // const improveEfficiencySchema = baseSchema.extend({
 //   type: z.literal(PRD_TYPE.IMPROVE_EFFICIENCY),
@@ -128,21 +86,6 @@ const othersSchema = baseSchema.extend({
 //   inefficiencies: z.string().min(1, 'Inefficiencies are required'),
 //   metrics: z.string().min(1, 'Metrics are required'),
 // })
-
-const prdFormSchema = z.discriminatedUnion('type', [
-  solveProblemSchema,
-  createMVPSchema,
-  addFeatureSchema,
-  othersSchema,
-  // improveEfficiencySchema,
-  // enhanceUxSchema,
-])
-
-type SolveProblemFormData = z.infer<typeof solveProblemSchema>
-type CreateMVPFormData = z.infer<typeof createMVPSchema>
-type AddFeatureFormData = z.infer<typeof addFeatureSchema>
-type OthersFormData = z.infer<typeof othersSchema>
-export type PrdFormData = z.infer<typeof prdFormSchema>
 
 interface Props {
   isAuth?: boolean
