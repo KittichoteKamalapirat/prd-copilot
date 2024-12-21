@@ -1,11 +1,12 @@
 'use client'
 
 import { oneLiner } from '@/constants/brand'
+import { PrdFormData } from '@/lib/schemas/prdSchemas'
 import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import { MyDialog } from '../components/my-dialog'
-import { PrdForm, PrdFormData } from '../components/PrdForm'
+import { PrdForm } from '../components/PrdForm'
 import { PrdOutput } from '../components/PrdOutput/PrdOutput'
 import PricingSectionCards from '../components/PricingSectionCards'
 import { UserAuthForm } from '../components/user-auth-form'

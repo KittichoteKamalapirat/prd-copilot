@@ -52,7 +52,7 @@ export default function Navbar({ user, isPro }: Props) {
     <header className="flex flex-col justify-between w-full bg-white dark:bg-gray-950 shadow-sm">
       <div className="flex items-center justify-between h-16 px-4 md:px-6">
         <Link href={urlResolver.appHome} className="flex items-center" prefetch={false}>
-          <Image src="/logo.svg" alt="Logo" width={36} height={36} />
+          {/*<Image src="/logo.svg" alt="Logo" width={36} height={36} />*/}
           <span className="ml-2 font-semibold text-lg">{brandName}</span>
         </Link>
         <nav className="hidden md:flex md:items-center gap-6">

@@ -1,10 +1,10 @@
 import { toast } from '@/hooks/use-toast'
 import { Copy, Download } from 'lucide-react'
 import { PDFDocument, rgb } from 'pdf-lib'
-import { useStore } from '../lib/store'
-import { Button } from './ui/button'
-import { cn } from '../lib/utils'
 import { HTMLProps } from 'react'
+import { useStore } from '../lib/store'
+import { cn } from '../lib/utils'
+import { Button } from './ui/button'
 
 export const ActionBar = ({ className }: HTMLProps<HTMLDivElement>) => {
   const { text } = useStore((state) => state.prd)
@@ -46,11 +46,13 @@ export const ActionBar = ({ className }: HTMLProps<HTMLDivElement>) => {
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between gap-1 sm:gap-4 text-white text-sm font-bold font-mono leading-6 bg-stripes-indigo rounded-lg h-full">
+      <div className="flex items-center justify-between gap-1 sm:gap-4 rounded-lg">
         <Button
           onClick={handleCopy}
+          variant="outline"
           className={cn(
-            'grow h-16 p-0 sm:p-[1.1rem] w-20 sm:w-auto rounded-lg flex items-center justify-center bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-100 shadow-lg border',
+            'flex-1',
+            // 'grow p-0 sm:p-[1.1rem] w-20 sm:w-auto rounded-lg flex items-center justify-center bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-100 shadow-lg border',
             disabled && 'opacity-50 cursor-not-allowed'
           )}
           disabled={disabled}
@@ -60,8 +62,10 @@ export const ActionBar = ({ className }: HTMLProps<HTMLDivElement>) => {
 
         <Button
           onClick={handleDownload}
+          variant="outline"
           className={cn(
-            'grow h-16 p-0 sm:p-[1.1rem] w-20 sm:w-auto rounded-lg flex items-center justify-center bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-100 shadow-lg border',
+            'flex-1',
+            // 'grow p-0 sm:p-[1.1rem] w-20 sm:w-auto rounded-lg flex items-center justify-center bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-100 shadow-lg border',
             disabled && 'opacity-50 cursor-not-allowed'
           )}
           disabled={disabled}

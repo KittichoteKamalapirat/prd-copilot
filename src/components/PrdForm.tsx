@@ -194,12 +194,13 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Section 1: About Product */}
       <div>
         <div className="space-y-4">
-          <div>
+          {/* Section 1: About Product */}
+          <div className="flex flex-col gap-2">
             <Label htmlFor="type" className="text-lg font-bold text-gray-800 mb-5">
-              What kind of PRD are you trying to create? <span className="text-red-500">*</span>
+              <span className="text-teal-500">1.</span> What kind of PRD are you trying to create?{' '}
+              <span className="text-red-500">*</span>
             </Label>
             <Controller
               name="type"
@@ -230,11 +231,11 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
       </div>
 
       {Boolean(watch('type')) && (
-        <div>
+        <div className="flex flex-col gap-2">
           {/* Section 2: Define Requirements */}
           <div>
             <div className="text-lg font-bold text-gray-800 mb-5">
-              <span className="text-pink-500">2.</span> Define your Requirement
+              <span className="text-teal-500">2.</span> Define your Requirement
             </div>
           </div>
 
@@ -433,9 +434,9 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
             <AccordionItem value="item-1">
               <AccordionTrigger>Advanced options</AccordionTrigger>
               <AccordionContent>
-                <div>
+                <div className="flex flex-col gap-2">
                   <div className="text-lg font-bold text-gray-800 mb-5">
-                    <span className="text-pink-500">3.</span> Sections to include
+                    <span className="text-teal-500">3.</span> Sections to include
                   </div>
                   <div className="space-y-4">
                     <div className="flex gap-1 items-center">
