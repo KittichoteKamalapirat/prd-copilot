@@ -1,10 +1,10 @@
 // src/hooks/useCreatePrdInFirestore.ts
+import { PrdFormData } from '@/lib/schemas/prdSchemas'
 import { doc, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
-
-import { PrdFormData } from '@/components/PrdForm'
-import { firestore } from '../firebase/config'
 import { LocalStorage } from '../app/enums/LocalStorage'
+
+import { firestore } from '../firebase/config'
 
 export const useCreatePrdInFirestore = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)

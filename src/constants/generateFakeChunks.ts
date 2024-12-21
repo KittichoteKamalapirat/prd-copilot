@@ -1,4 +1,4 @@
-import { PrdFormData } from '../components/PrdForm'
+import { PrdFormData } from '@/lib/schemas/prdSchemas'
 
 export const generateFakeChunks = (input: PrdFormData): string[] => {
   const {
