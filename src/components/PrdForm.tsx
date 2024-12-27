@@ -244,12 +244,13 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
             <>
               <div>
                 <Label htmlFor="problem">
-                  What is the problem you are trying to solve?
+                  Problem Statement
                   <span className="text-red-500">*</span>
                 </Label>
                 <Textarea
                   id="problem"
                   rows={4}
+                  placeholder={'What is the problem you are trying to solve?'}
                   {...register('problem')}
                   className={
                     (errors as FieldErrorsImpl<SolveProblemFormData>).problem
@@ -267,10 +268,11 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
 
               <div>
                 <Label htmlFor="solution">
-                  What is the solution?<span className="text-red-500">*</span>
+                  Solution?<span className="text-red-500">*</span>
                 </Label>
                 <Textarea
                   id="solution"
+                  placeholder="What is the solution?"
                   rows={4}
                   {...register('solution')}
                   className={
@@ -290,10 +292,14 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
             <>
               <div>
                 <Label htmlFor="productName">
-                  What is the product name?
+                  Product Name
                   <span className="text-red-500">*</span>
                 </Label>
-                <Input id="productName" {...register('productName')} />
+                <Input
+                  id="productName"
+                  placeholder="e.g., PRD Copilot"
+                  {...register('productName')}
+                />
                 {(errors as FieldErrorsImpl<CreateMVPFormData>).productName && (
                   <p className="mt-1 text-sm text-red-500">
                     {(errors as FieldErrors<CreateMVPFormData>).productName?.message}
@@ -303,10 +309,14 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
 
               <div>
                 <Label htmlFor="valueProp">
-                  What is the value proposition?
+                  Value Proposition
                   <span className="text-red-500">*</span>
                 </Label>
-                <Input id="valueProp" {...register('valueProp')} />
+                <Input
+                  id="valueProp"
+                  placeholder="What value does it bring?"
+                  {...register('valueProp')}
+                />
                 {(errors as FieldErrorsImpl<CreateMVPFormData>).valueProp && (
                   <p className="mt-1 text-sm text-red-500">
                     {(errors as FieldErrors<CreateMVPFormData>).valueProp?.message}
@@ -316,11 +326,12 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
 
               <div>
                 <Label htmlFor="solution">
-                  What are the main features?
+                  Key Features
                   <span className="text-red-500">*</span>
                 </Label>
                 <Textarea
                   id="featureList"
+                  placeholder="List the main features needed"
                   rows={4}
                   {...register('featureList')}
                   className={
@@ -340,10 +351,14 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
             <>
               <div>
                 <Label htmlFor="existingProduct">
-                  Tell us a bit more about the existing product.
+                  Existing Product
                   <span className="text-red-500">*</span>
                 </Label>
-                <Input id="existingProduct" {...register('existingProduct')} />
+                <Input
+                  id="existingProduct"
+                  placeholder="How does the existing product work?"
+                  {...register('existingProduct')}
+                />
                 {(errors as FieldErrorsImpl<AddFeatureFormData>).existingProduct && (
                   <p className="mt-1 text-sm text-red-500">
                     {(errors as FieldErrors<AddFeatureFormData>).existingProduct?.message}
@@ -352,10 +367,14 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
               </div>
               <div>
                 <Label htmlFor="featureName">
-                  What is the feature name?
+                  Feature Name
                   <span className="text-red-500">*</span>
                 </Label>
-                <Input id="featureName" {...register('featureName')} />
+                <Input
+                  id="featureName"
+                  placeholder="What is the feature name?"
+                  {...register('featureName')}
+                />
                 {(errors as FieldErrorsImpl<AddFeatureFormData>).featureName && (
                   <p className="mt-1 text-sm text-red-500">
                     {(errors as FieldErrors<AddFeatureFormData>).featureName?.message}
@@ -369,12 +388,13 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
             <>
               <div>
                 <Label htmlFor="problem">
-                  What is the problem you are trying to solve?
+                  Problem Statement
                   <span className="text-red-500">*</span>
                 </Label>
                 <Textarea
                   id="problem"
                   rows={4}
+                  placeholder="What is the problem you are trying to solve?"
                   {...register('problem')}
                   className={
                     (errors as FieldErrorsImpl<OthersFormData>).problem ? 'border-red-500' : ''
@@ -391,8 +411,8 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
           )}
 
           <div>
-            <Label htmlFor="audience">Who are the audiences?</Label>
-            <Input id="audience" {...register('audience')} />
+            <Label htmlFor="audience">Audiences</Label>
+            <Input id="audience" placeholder="Who are the audiences?" {...register('audience')} />
             {(errors as FieldErrorsImpl<SolveProblemFormData>).audience && (
               <p className="mt-1 text-sm text-red-500">
                 {(errors as FieldErrorsImpl<SolveProblemFormData>).audience?.message}
@@ -401,9 +421,10 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
           </div>
 
           <div>
-            <Label htmlFor="successMetrics">What are the success metrics?</Label>
+            <Label htmlFor="successMetrics">Success Metrics</Label>
             <Textarea
               id="successMetrics"
+              placeholder="How will you measure success?"
               rows={4}
               {...register('successMetrics')}
               className={errors.successMetrics ? 'border-red-500' : ''}
@@ -415,9 +436,10 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
           </div>
 
           <div>
-            <Label htmlFor="additional">Additional note?</Label>
+            <Label htmlFor="additional">Extra Note</Label>
             <Textarea
               id="additional"
+              placeholder="Any other details?"
               rows={4}
               {...register('additional')}
               className={errors.additional ? 'border-red-500' : ''}
@@ -616,14 +638,14 @@ export const PrdForm = ({ isPro, initialData }: Props) => {
       )}
 
       {/* Sticky Action Buttons */}
-      <div className="sticky bottom-1 left-0 right-0 px-2 py-2 font-semibold text-sm text-slate-900 bg-slate-50/90 backdrop-blur-sm ring-1 ring-slate-900/10 space-x-4 rounded-xl shadow-2xl">
+      <div className="sticky bottom-1 left-0 right-0 px-2 py-2 font-semibold text-sm text-slate-900  backdrop-blur-sm ring-1 ring-slate-900/10 space-x-4 rounded-xl shadow-2xl">
         <div className="flex gap-4 text-white leading-6 bg-stripes-indigo rounded-lg">
           <Button
             type="submit"
             className="sm:p-4 p-3 pt-4 grow rounded-lg flex items-center justify-center shadow-lg text-xs sm:text-base"
             disabled={!isValid || !isDirty}
           >
-            Generate
+            Generate PRD
             <SendHorizontal />
           </Button>
         </div>

@@ -13,8 +13,7 @@ interface Props {
   isPro?: boolean
 }
 
-const placeHolder = `Hi, I am PRD Copilot, your PRD writing assistant. Tell me what
-            you want, and I will help you scaffold your PRD. 🚀`
+const placeHolder = `Fill out the form and click "Generate PRD" to see your AI-generated PRD here. 🚀`
 
 const blockLabel = 'Subscribe to view ' // Actual action could be login or subscribe
 export const PrdOutput = ({ isAuth, isPro }: Props) => {
@@ -32,7 +31,7 @@ export const PrdOutput = ({ isAuth, isPro }: Props) => {
   return (
     <div
       className={cn(
-        'form-textarea relative w-full p-4 px-8 overflow-scroll h-[calc(100%-1rem)] shadow-2xl flex items-center justify-center flex-col bg-white mt-2',
+        'form-textarea relative w-full p-4 overflow-scroll h-[calc(100%-1rem)]  flex items-center justify-center flex-col bg-white',
         !isPro && ' select-none'
       )}
     >

@@ -1,6 +1,6 @@
 'use client'
-
 import { DownloadOptions } from '@/components/DownloadOptions'
+import { Card } from '@/components/ui/card'
 import { oneLiner } from '@/constants/brand'
 import { PrdFormData } from '@/lib/schemas/prdSchemas'
 import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
@@ -37,23 +37,25 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
     // Make the page not scrollable
     <Layout bodyClassName="mx-0 lg:overflow-hidden" user={user} className="h-screen" isPro={isPro}>
       {/* Main Content */}
-      <main className="flex relative flex-col lg:flex-row">
+      <main className="flex gap-2 relative flex-col-reverse lg:flex-row max-w-5xl mx-auto my-4">
         {/* left */}
-        <div
-          className="lg:flex-1 relative lg:block sm:px-5 lg:h-full h-auto overflow-y-auto"
+        <Card
+          className="lg:flex-1 relative lg:block lg:h-full h-auto overflow-y-auto"
           style={{
-            height: 'calc(100vh - 64px)',
+            height: 'calc(100vh - 84px)',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-neutral-200 to-white pointer-events-none -z-10"></div>
+          <div className="absolute inset-0 pointer-events-none -z-10"></div>
 
           <PrdOutput isAuth={isAuth} isPro={isPro} />
-        </div>
-
+        </Card>
         {/* right */}
-        <div
-          className="lg:flex-1 mx-8 overflow-scroll px-4 py-8 lg:w-1/2 relative"
-          style={{ height: 'calc(100vh - 64px)' }}
+
+        <Card
+          className="lg:flex-1 overflow-scroll p-4 lg:w-1/2 relative shadow-lg"
+          style={{
+            height: 'calc(100vh - 84px)',
+          }}
         >
           <h1 className="text-3xl font-bold text-gray-900 mb-6">{oneLiner}</h1>
           <p className="text-gray-500 mb-6">
@@ -67,7 +69,7 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
           </Button> */}
 
           <PrdForm isAuth={Boolean(user)} initialData={initialData} isPro={isPro} />
-        </div>
+        </Card>
         {userId && (
           <MyDialog
             open={showUpsellSheet}
