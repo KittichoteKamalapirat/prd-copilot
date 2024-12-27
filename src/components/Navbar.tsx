@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { getAuth, signOut } from 'firebase/auth'
-import { Loader, LogOut, MenuIcon } from 'lucide-react'
+import { Gem, Layers, Loader, LogOut, MenuIcon } from 'lucide-react'
 import { DecodedIdToken } from 'next-firebase-auth-edge/auth'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -66,6 +66,16 @@ export default function Navbar({ user, isPro }: Props) {
             </Link>
           )}
 
+          {isPro && (
+            <Link
+              href={urlResolver.prds}
+              className="text-sm font-medium flex items-center gap-1 hover:underline"
+            >
+              <Layers width={16} height={16} />
+              My PRDs
+            </Link>
+          )}
+
           {isAuth ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -117,7 +127,7 @@ export default function Navbar({ user, isPro }: Props) {
           </SheetTrigger>
           {/* Mobile Sheet */}
           <SheetContent side="left">
-            <div className="flex flex-col items-start gap-6 p-6">
+            <div className="flex flex-col items-start gap-6 mt-4">
               {isAuth ? (
                 <>
                   <Card className="flex gap-2 items-center p-4 w-full">
@@ -129,15 +139,29 @@ export default function Navbar({ user, isPro }: Props) {
                   {isPro && (
                     <Link
                       href={urlResolver.subscription}
-                      className="text-lg font-medium hover:underline"
+                      className="flex items-center gap-1 text-sm font-medium hover:underline"
                       prefetch={false}
                     >
+                      <Gem width={16} height={16} />
                       My Subscription
                     </Link>
                   )}
+
+                  {isPro && (
+                    <Link
+                      href={urlResolver.prds}
+                      className="flex items-center gap-1 text-sm font-medium hover:underline"
+                      prefetch={false}
+                    >
+                      <Layers width={16} height={16} />
+                      My PRDs
+                    </Link>
+                  )}
+
                   <Button
                     onClick={handleLogout}
-                    variant="ghost"
+                    variant="link"
+                    size="lg"
                     className="w-full justify-start p-0"
                   >
                     {isLoggingOut ? <Loader /> : <LogOut />}

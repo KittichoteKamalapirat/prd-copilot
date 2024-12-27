@@ -22,7 +22,7 @@ export const useCreatePrdInFirestore = () => {
 
       // Save each field to Firestore under users/{userId}/prds/{id}
       const prdDocRef = doc(firestore, `users/${userId}/prds/${prdId}`)
-      await setDoc(prdDocRef, { ...prdData, prdId })
+      await setDoc(prdDocRef, { ...prdData, id: prdId })
 
       return prdId
     } catch (error) {

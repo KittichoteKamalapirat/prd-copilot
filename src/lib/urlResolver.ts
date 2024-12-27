@@ -12,4 +12,6 @@ export const urlResolver = {
   subscription: '/subscription',
   success: '/success',
   cancel: '/cancel',
+  prds: '/app/prds',
+  prd: (id: string) => `/app/prds/${id}`,
 }
