@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { Lock } from 'lucide-react'
+import { useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useStore } from '../../lib/store'
 import { ActionBar } from '../ActionBar'
@@ -18,7 +19,7 @@ const placeHolder = `Fill out the form and click "Generate PRD" to see your AI-g
 const blockLabel = 'Subscribe to view ' // Actual action could be login or subscribe
 export const PrdOutput = ({ isAuth, isPro }: Props) => {
   const { text, isBlurred } = useStore((state) => state.prd)
-
+  const styledTextRef = useRef<HTMLDivElement>(null)
   const { set } = useStore((state) => state.display)
 
   const handleInvalidUser = () => {
@@ -36,7 +37,7 @@ export const PrdOutput = ({ isAuth, isPro }: Props) => {
       )}
     >
       <div className="text-left absolute top-4 left-4">
-        <div className={cn('is-typed', !isPro && isBlurred && 'blurred')}>
+        <div ref={styledTextRef} className={cn('is-typed', !isPro && isBlurred && 'blurred')}>
           <ReactMarkdown>{text || placeHolder}</ReactMarkdown>
         </div>
       </div>

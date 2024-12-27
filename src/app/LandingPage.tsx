@@ -37,12 +37,12 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
     // Make the page not scrollable
     <Layout bodyClassName="mx-0 lg:overflow-hidden" user={user} className="h-screen" isPro={isPro}>
       {/* Main Content */}
-      <main className="flex gap-2 relative flex-col-reverse lg:flex-row max-w-5xl mx-auto my-4">
+      <div className="flex gap-2 relative flex-col-reverse lg:flex-row max-w-5xl mx-auto m-4">
         {/* left */}
         <Card
           className="lg:flex-1 relative lg:block lg:h-full h-auto overflow-y-auto"
           style={{
-            height: 'calc(100vh - 84px)',
+            height: 'calc(100vh - 90px)', // navbar + padding
           }}
         >
           <div className="absolute inset-0 pointer-events-none -z-10"></div>
@@ -52,9 +52,9 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
         {/* right */}
 
         <Card
-          className="lg:flex-1 overflow-scroll p-4 lg:w-1/2 relative shadow-lg"
+          className="lg:flex-1 overflow-scroll p-4 lg:w-1/2 relative"
           style={{
-            height: 'calc(100vh - 84px)',
+            height: 'calc(100vh - 90px)',
           }}
         >
           <h1 className="text-3xl font-bold text-gray-900 mb-6">{oneLiner}</h1>
@@ -93,7 +93,7 @@ export default function LandingPage({ user, isAuth, isPro, initialData, output }
         >
           <DownloadOptions />
         </MyDialog>
-      </main>
+      </div>
     </Layout>
   )
 }
